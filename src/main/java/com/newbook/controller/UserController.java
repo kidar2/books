@@ -3,10 +3,9 @@ package com.newbook.controller;
 import com.newbook.entity.User;
 import com.newbook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,13 +24,6 @@ public class UserController
 	}
 
 
-	@GetMapping("/hello")
-	public String hello()
-	{
-		return "hello";
-	}
-
-
 	@GetMapping("/users")
 	@ResponseBody
 	public List<User> getUsers()
@@ -40,10 +32,25 @@ public class UserController
 	}
 
 
-	@GetMapping("/test")
-	public User test()
+	@PostMapping("/users")
+	@ResponseStatus(HttpStatus.CREATED)
+	public void addUser(@RequestBody User user)
 	{
-		return new User();
+		userService.addUser(user);
 	}
 
+	@PostMapping("/users/{userId}")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public void updateUser(@PathVariable Integer userId, @RequestBody User user)
+	{
+		user.setId(userId);
+		userService.updateUser(user);
+	}
+
+	@DeleteMapping("/users/{userId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteUser(@PathVariable Integer userId)
+	{
+		userService.removeUser(userId);
+	}
 }

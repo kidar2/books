@@ -1,5 +1,7 @@
 package com.newbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Book
@@ -8,6 +10,7 @@ public class Book
 	private String name;
 	private int[] autorIds;
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date date;
 
 	public int getId()

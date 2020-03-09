@@ -1,11 +1,14 @@
 package com.newbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Autor
 {
 	private int id;
 	private String name;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date birthday;
 	private String country;
 

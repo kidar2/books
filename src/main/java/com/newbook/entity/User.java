@@ -1,11 +1,16 @@
 package com.newbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class User
 {
 	private int id;
 	private String name;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private Date birthday;
 
 	public Date getBirthday()
 	{
@@ -17,7 +22,6 @@ public class User
 		this.birthday = birthday;
 	}
 
-	private Date birthday;
 
 	public User()
 	{
