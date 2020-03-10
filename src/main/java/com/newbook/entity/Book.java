@@ -10,6 +10,18 @@ public class Book
 	private String name;
 	private int[] autorIds;
 
+	public String getGenre()
+	{
+		return genre;
+	}
+
+	public void setGenre(String genre)
+	{
+		this.genre = genre;
+	}
+
+	private String genre;
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date date;
 

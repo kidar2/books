@@ -1,11 +1,10 @@
-package com.newbook.dao;
+package com.newbook.service;
 
 import com.newbook.entity.Book;
 
-
 import java.util.List;
 
-public interface BooksDao
+public interface BookService
 {
 	List<Book> getBooks();
 
@@ -14,4 +13,5 @@ public interface BooksDao
 	void removeBook(int id);
 
 	void updateBook(Book book);
+
 }

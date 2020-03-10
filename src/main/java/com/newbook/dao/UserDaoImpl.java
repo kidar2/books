@@ -1,7 +1,6 @@
 package com.newbook.dao;
 
 import com.newbook.entity.User;
-import com.newbook.mapper.UserMapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,7 +23,18 @@ public class UserDaoImpl implements UserDao
 	@Override
 	public List<User> getUsers()
 	{
-		return jdbcTemplate.query("select * from users", new UserMapper());
+		return jdbcTemplate.query("select * from users", new RowMapper<User>()
+		{
+			@Override
+			public User mapRow(ResultSet resultSet, int i) throws SQLException
+			{
+				User u = new User();
+				u.setId(resultSet.getInt("id"));
+				u.setName(resultSet.getString("name"));
+				u.setBirthday(resultSet.getDate("birthday"));
+				return u;
+			}
+		});
 	}
 
 	@Override

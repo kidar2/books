@@ -1,8 +1,11 @@
 package com.newbook.config;
 
 
+import com.newbook.dao.BookDaoImpl;
 import com.newbook.dao.UserDao;
 import com.newbook.dao.UserDaoImpl;
+import com.newbook.service.BookService;
+import com.newbook.service.BookServiceImpl;
 import com.newbook.service.UserService;
 import com.newbook.service.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -43,5 +46,18 @@ public class MainConfig
 	public UserService getUserService()
 	{
 		return new UserServiceImpl();
+	}
+
+
+	@Bean
+	public BookDaoImpl getBookDao()
+	{
+		return new BookDaoImpl(getJdbcTemplate());
+	}
+
+	@Bean
+	public BookService getBookService()
+	{
+		return new BookServiceImpl();
 	}
 }
