@@ -1,13 +1,26 @@
 package com.newbook.config;
 
-import org.springframework.context.annotation.Bean;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
+import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.ViewResolver;
+
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 
 @Configuration
@@ -16,21 +29,79 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 public class WebConfig implements WebMvcConfigurer
 {
 
-	@Bean
-	public ViewResolver getViewResolver()
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters)
 	{
-		FreeMarkerViewResolver res = new FreeMarkerViewResolver();
-		res.setOrder(1);
-		res.setSuffix(".ftl");
-		res.setPrefix("");
-		return res;
+		final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ"));
+		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		objectMapper.setVisibility(new FieldVisibilityChecker());
+		objectMapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
+
+		SimpleModule module = new SimpleModule();
+		objectMapper.registerModule(module);
+
+
+		converter.setObjectMapper(objectMapper);
+		converters.add(converter);
 	}
 
-	@Bean
-	public FreeMarkerConfigurer getFreeMarkerConfigurer()
+	public static class FieldVisibilityChecker extends VisibilityChecker.Std
 	{
-		FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
-		freeMarkerConfigurer.setTemplateLoaderPaths("/", "/WEB-INF/views/");
-		return freeMarkerConfigurer;
+		public FieldVisibilityChecker()
+		{
+			super(JsonAutoDetect.Visibility.ANY);
+		}
+
+		@Override
+		public boolean isGetterVisible(Method var1)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean isGetterVisible(AnnotatedMethod var1)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean isIsGetterVisible(Method var1)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean isIsGetterVisible(AnnotatedMethod var1)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean isSetterVisible(Method var1)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean isSetterVisible(AnnotatedMethod var1)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean isCreatorVisible(Member var1)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean isCreatorVisible(AnnotatedMember var1)
+		{
+			return false;
+		}
 	}
+
 }
