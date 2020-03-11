@@ -11,8 +11,7 @@ import com.newbook.service.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
+import org.apache.commons.dbcp2.BasicDataSource;
 import javax.sql.DataSource;
 
 @Configuration
@@ -28,7 +27,7 @@ public class MainConfig
 	@Bean
 	public DataSource getDataSource()
 	{
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setUrl("jdbc:postgresql://localhost:5432/books");
 		dataSource.setUsername("postgres");
 		dataSource.setPassword("postgres");

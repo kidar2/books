@@ -36,7 +36,7 @@ public class BookDaoImpl implements BooksDao
 			{
 				return resultSet.getInt("id");
 			}
-		}, new Object[]{book.getName(), book.getDate(), book.getGenre()}).get(0);
+		}, book.getName(), book.getDate(), book.getGenre()).get(0);
 	}
 
 	@Override
@@ -50,8 +50,7 @@ public class BookDaoImpl implements BooksDao
 	{
 		jdbcTemplate.update(
 				  "update users set name=?, date =?, genre=? where id=" + book.getId(),
-				  new Object[]{book.getName(), book.getDate(), book.getGenre()}
-		);
+				  book.getName(), book.getDate(), book.getGenre());
 	}
 
 	public static class BookMapper implements RowMapper<Book>
