@@ -10,8 +10,12 @@ import com.newbook.service.UserService;
 import com.newbook.service.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.web.context.WebApplicationContext;
+
 import javax.sql.DataSource;
 
 @Configuration
@@ -36,25 +40,30 @@ public class MainConfig
 	}
 
 	@Bean
+	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 	public UserDao getUserDao()
 	{
 		return new UserDaoImpl(getJdbcTemplate());
 	}
 
 	@Bean
+	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 	public UserService getUserService()
 	{
+		System.out.println("getUserService");
 		return new UserServiceImpl();
 	}
 
 
 	@Bean
+	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 	public BookDaoImpl getBookDao()
 	{
 		return new BookDaoImpl(getJdbcTemplate());
 	}
 
 	@Bean
+	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 	public BookService getBookService()
 	{
 		return new BookServiceImpl();
