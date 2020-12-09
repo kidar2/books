@@ -1,5 +1,6 @@
 package com.newbook.controller;
 
+import com.newbook.entity.Kuku;
 import com.newbook.entity.User;
 import com.newbook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class UserController
 	@ResponseBody
 	public List<User> getUsers()
 	{
+		new Kuku().test();
 		return userService.getUsers();
 	}
 
